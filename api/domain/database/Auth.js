@@ -15,7 +15,13 @@ let AuthLogin = async (login) => {
     return data;
 }
 
+let AuthUpdate = async (user) => {
+    let data = await User.updateOne({ email: user.email }, user)
+    return data;
+}
+
 module.exports = {
     AuthSignUp,
-    AuthLogin
+    AuthLogin,
+    AuthUpdate
 };

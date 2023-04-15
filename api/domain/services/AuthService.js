@@ -9,7 +9,13 @@ let AuthLogin = async (login) => {
     return data;
 }
 
+let AuthUpdate = async (user) => {
+    let data = await AuthRepo.AuthUpdate(user);
+    return data;
+}
+
 module.exports = {
     AuthRegister,
-    AuthLogin
+    AuthLogin,
+    AuthUpdate
 };

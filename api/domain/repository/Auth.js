@@ -8,8 +8,14 @@ let AuthLogin = async (login) => {
     return data;
 }
 
+let AuthUpdate = async (user) => {
+    let data = await AuthDb.AuthUpdate(user);
+    return data;
+}
+
 
 module.exports = {
     AuthRegister,
-    AuthLogin
+    AuthLogin,
+    AuthUpdate
 };
