@@ -1,0 +1,56 @@
+const express = require('express')
+
+const regex = require("../regex/regex")
+const AuthService = require("../domain/services/AuthService")
+const router = express.Router()
+
+const path = "/auth"
+
+router.get(`${path}/login`, (req, res) => {
+    let loginData = {
+        email: req.body.email,
+        password: req.body.password,
+    }
+
+    AuthService.AuthLogin(loginData).then((data) => {
+        res.status(200)
+        if (data === null) {
+            res.status(404)
+            res.json({msg: "User not found"})
+        } else {
+            res.status(200)
+            res.json(data)
+        }
+    }).catch(() => {
+        res.status(500);
+        res.json({msg: "Call the cops"})
+    });
+});
+
+router.post(`${path}/signup`, (req, res) => {
+    let errors = []
+    let newUser = {
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password,
+        repeated_password: req.body.repeated_password
+    }
+
+    !regex.ValidateUsername(newUser.username) ? errors.push({Error: "Invalid username"}) : console.log("Valid Username");
+    !regex.ValidateEmail(newUser.email) ? errors.push({Error: "Invalid email"}) : console.log("Valid Email");
+    newUser.password !== newUser.repeated_password ? errors.push({Error: "Passwords do not match"}): console.log("Valid Passwords");
+
+
+    if (errors.length == 0) {
+        AuthService.AuthRegister(newUser).then(() => {
+            res.status(201)
+            res.json({msg: "Registered the user successfully :)"})
+            console.log("Done to DB")
+        })
+    } else {
+        res.status(400)
+        res.json(errors)
+    }
+});
+
+module.exports = router;
