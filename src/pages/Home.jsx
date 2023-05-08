@@ -1,31 +1,31 @@
 import reactLogo from '../assets/react.svg'
 import viteLogo from  '../assets/react.svg'
-import {useState} from "react";
+import React, {useState} from "react";
 let Home = () => {
-    const [count, setCount] = useState(0)
-
     return (
         <>
-            <div>
-                <a href="https://vitejs.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo" />
-                </a>
-                <a href="https://reactjs.org" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo" />
-                </a>
+            <div className="container text-center">
+                <div className="row">
+                    <div className="col">
+                        <h1>Welcome</h1>
+
+                        @username
+                    </div>
+                    <div className="col">
+                        <img src={"rap.png"}/>
+                    </div>
+                </div>
             </div>
-            <h1>Vite + React</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1000)}>
-                    count is {count}
-                </button>
-                <p>
-                    Edit <code>src/App.jsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-            </p>
+
+            <br></br>
+            <form>
+                <button htmlFor={"create-room"} className={"home"}>Create Room</button>
+                <button htmlFor={"join-room"} className={"home"}>Join Room</button>
+                <button htmlFor={"profile"} className={"home"}>Profile</button>
+                <button htmlFor={"stats"} className={"home"}>Stats</button>
+                <a htmlFor={"sign-out"} className={"sign-out"} href={"/login"}>Sign out</a>
+                <button htmlFor={"sign-out"} className={"sign-out"} href={"/login"}>Sign out</button>
+            </form>
         </>
     )
 }
