@@ -4,8 +4,8 @@ let AuthRegister = async (user) => {
     await AuthRepo.AuthRegister(user);
 }
 
-let AuthLogin = async (login) => {
-    let data = await AuthRepo.AuthLogin(login);
+let AuthLogin = async (loginData) => {
+    let data = await AuthRepo.AuthLogin(loginData);
     return data;
 }
 

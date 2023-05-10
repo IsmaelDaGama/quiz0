@@ -13,12 +13,13 @@ router.get(`${path}/login`, (req, res) => {
     }
 
     AuthService.AuthLogin(loginData).then((data) => {
-        if (data === null || !Object.hasOwn(data, 'email')) {
+        if (!Object.hasOwn(data, 'email')) {
             res.status(404)
-            res.json({msg: "User not found"})
+            res.json({msg: "User not founded"})
         } else {
             res.status(200)
             res.json(data)
+            res.json({msg: "User founded successfully"})
         }
     }).catch(() => {
         res.status(500);
