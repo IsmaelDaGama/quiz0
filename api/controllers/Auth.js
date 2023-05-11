@@ -33,12 +33,12 @@ router.post(`${path}/signup`, (req, res) => {
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
-        repeated_password: req.body.repeated_password
+        //repeated_password: req.body.repeated_password
     }
 
     !regex.ValidateUsername(newUser.username) ? errors.push({Error: "Invalid username"}) : console.log("Valid Username");
-    !regex.ValidateEmail(newUser.email) ? errors.push({Error: "Invalid email"}) : console.log("Valid Email");
-    newUser.password !== newUser.repeated_password ? errors.push({Error: "Passwords do not match"}): console.log("Valid Passwords");
+    //!regex.ValidateEmail(newUser.email) ? errors.push({Error: "Invalid email"}) : console.log("Valid Email");
+    //newUser.password !== newUser.repeated_password ? errors.push({Error: "Passwords do not match"}): console.log("Valid Passwords");
 
 
     if (errors.length == 0) {
