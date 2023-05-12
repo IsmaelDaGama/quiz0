@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 let EditProfile = () => {
     const [user,setUser]= useState(EditProfile.user)

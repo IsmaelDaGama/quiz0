@@ -1,26 +1,31 @@
 import React, { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
+
 import { useRef } from 'react';
 
 const SignUp = () =>{
     const [user,setUser]= useState('');
+    const navigate = useNavigate();
 
 
     const submit = e => {
         e.preventDefault()
         fetch('http://localhost:8080/auth/signup', {
             method: 'POST',
-            body: JSON.stringify({"username":user.username,"password":user.password,"email":user.email}),
+            body: JSON.stringify({"username":user.username,"email":user.email,"password":user.password,"repeated_password":user.repeated_password}),
             headers: {'Content-Type': 'application/json'},
         })
             .then(res => res.json())
             .then(json => json)
+            //navigate("/home")
+
     }
 
     return (
         <>
         <h2>Let's sign you up 📬</h2>
 
-        <form onSubmit={submit} action={"/home"}>
+        <form onSubmit={submit} >
 
             <label htmlFor={"username"}>Username: </label>
             <input name={"username"} type={"text"}

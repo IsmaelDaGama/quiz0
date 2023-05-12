@@ -1,6 +1,7 @@
 import reactLogo from '../assets/react.svg'
 import viteLogo from  '../assets/react.svg'
 import React, {useState} from "react";
+import { useNavigate } from "react-router-dom";
 let Home = () => {
     return (
         <>

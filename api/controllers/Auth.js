@@ -9,16 +9,18 @@ const path = "/auth"
 router.get(`${path}/login`, (req, res) => {
     let loginData = {
         email: req.body.email,
-        password: req.body.password,
+        password: req.body.password
     }
 
     AuthService.AuthLogin(loginData).then((data) => {
-        if (!Object.hasOwn(data, 'email')) {
+        if (Object.hasOwn(data, "email")) {
+            //console.log(loginData)
+            //console.log(Object.hasOwn(data, "email"))
             res.status(404)
             res.json({msg: "User not founded"})
         } else {
-            res.status(200)
             res.json(data)
+            res.status(200)
             res.json({msg: "User founded successfully"})
         }
     }).catch(() => {
@@ -33,12 +35,12 @@ router.post(`${path}/signup`, (req, res) => {
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
-        //repeated_password: req.body.repeated_password
+        repeated_password: req.body.repeated_password
     }
 
     !regex.ValidateUsername(newUser.username) ? errors.push({Error: "Invalid username"}) : console.log("Valid Username");
-    //!regex.ValidateEmail(newUser.email) ? errors.push({Error: "Invalid email"}) : console.log("Valid Email");
-    //newUser.password !== newUser.repeated_password ? errors.push({Error: "Passwords do not match"}): console.log("Valid Passwords");
+    !regex.ValidateEmail(newUser.email) ? errors.push({Error: "Invalid email"}) : console.log("Valid Email");
+    newUser.password !== newUser.repeated_password ? errors.push({Error: "Passwords do not match"}): console.log("Valid Passwords");
 
 
     if (errors.length == 0) {

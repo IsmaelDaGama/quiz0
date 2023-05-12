@@ -1,5 +1,6 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import React, {useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 
 import QuizPage from './pages/QuizPage'
@@ -19,17 +20,6 @@ import './App.sass'
 
 
 function App() {
-    /*
-    const cors = require("cors")
-    app.use(
-        cors({
-            origin: "http://localhost:5173/",
-            methods: ["GET", "POST", "PUT", "DELETE"],
-            allowedHeaders: ["Content-Type", "Authorization"],
-            credentials: true,
-            optionsSuccessStatus: 200,
-        })
-    );*/
 
   return (
     <div className="App">
