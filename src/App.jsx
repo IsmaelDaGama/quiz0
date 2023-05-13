@@ -1,7 +1,10 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
+import { CookiesProvider } from "react-cookie";
 
+import io from "socket.io-client";
+const socket = io.connect("http://localhost:8081");
 
 import QuizPage from './pages/QuizPage'
 import Home from './pages/Home'
@@ -31,9 +34,9 @@ function App() {
                     <Route path="home" element={<Home />} />
                     <Route path="signup" element={<SignUp />} />
                     <Route path="editprofile" element={<EditProfile/>} />
-                    <Route path="waitingroom" element={<WaitingRoom/>} />
-                    <Route path="categories" element={<Categories/>} />
-                    <Route path="questionstemplate" element={<QuestionsTemplate />} />
+                    <Route path="waitingroom" exact element={<WaitingRoom socket={socket}/>} />
+                    <Route path="categories" element={<Categories/>} socket={socket}/>
+                    <Route path="questionstemplate" element={<QuestionsTemplate socket={socket}/>} />
                     <Route path="*" element={<Error />} />
                 </Route>
             </Routes>

@@ -12,13 +12,13 @@ const SignUp = () =>{
         e.preventDefault()
         fetch('http://localhost:8080/auth/signup', {
             method: 'POST',
-            body: JSON.stringify({"username":user.username,"email":user.email,"password":user.password,"repeated_password":user.repeated_password}),
-            headers: {'Content-Type': 'application/json'},
+            headers: [{'Content-Type': 'application/json'},
+                        {'Access-Control-Allow-Origin': '*'}],
+            body: JSON.stringify({'username': user.username,'email':user.email,'password':user.password,'repeated_password':user.repeated_password})
         })
             .then(res => res.json())
             .then(json => json)
-            //navigate("/home")
-
+            navigate("/home")
     }
 
     return (

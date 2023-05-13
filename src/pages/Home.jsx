@@ -3,6 +3,7 @@ import viteLogo from  '../assets/react.svg'
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 let Home = () => {
+    const navigate = useNavigate();
     return (
         <>
             <div className="container text-center">
@@ -20,12 +21,14 @@ let Home = () => {
 
             <br></br>
             <form>
-                <button htmlFor={"create-room"} className={"home"}>Create Room</button>
-                <button htmlFor={"join-room"} className={"home"}>Join Room</button>
-                <button htmlFor={"profile"} className={"home"}>Profile</button>
+                <button onClick={()=>navigate("/waitingroom")} htmlFor={"create-room"} className={"home"}  >Create Room</button>
+                <button onClick={()=>navigate("/home")} htmlFor={"profile"} className={"home"}>Profile</button>
                 <button htmlFor={"stats"} className={"home"}>Stats</button>
-                <a htmlFor={"sign-out"} className={"sign-out"} href={"/login"}>Sign out</a>
-                <button htmlFor={"sign-out"} className={"sign-out"} href={"/login"}>Sign out</button>
+                <button onClick={()=>navigate("/editprofile")} htmlFor={"edit-profile"} className={"home"}>Edit Profile</button>
+                <input name={"join-room"} type="text" className={"home"} placeholder={"#123"}/>
+                <button onClick={()=>navigate("/login")} htmlFor={"sign-out"} className={"sign-out"}>Sign out</button>
+
+
             </form>
         </>
     )

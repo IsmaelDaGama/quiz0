@@ -2,18 +2,21 @@ import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 
 let EditProfile = () => {
-    const [user,setUser]= useState(EditProfile.user)
+    const [user,setUser]= useState('');
+    const navigate = useNavigate();
 
-    const options = {
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({user})
-    };
 
-    fetch('http://localhost:8080/auth/edit', options)
-        .then(response => response.json())
-        .then(response => console.log(response))
-        .catch(err => console.error(err));
+    const submit = e => {
+        e.preventDefault()
+        fetch('http://localhost:8080/auth/edit', {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+            body: JSON.stringify({'username': user.username,'email':user.email,'password':user.password,'repeated_password':user.repeated_password})
+        })
+            .then(res => res.json())
+            .then(json => json)
+            navigate("/home")
+    }
     return (
         <>
             <div className="container text-center">
@@ -33,13 +36,13 @@ let EditProfile = () => {
 
             <form onSubmit={submit}>
                 <label htmlFor={"username"}>Username:</label>
-                <input name={"user[username]"} type={"text"} value={user.username} onChange={e => setUser({ ...user, name: e.target.value})}/>
+                <input name={"username"} type={"text"} value={user.username} onChange={e => setUser({ ...user, username: e.target.value})}/>
                 <label htmlFor={"email"}>Email:</label>
-                <input name={"user[email]"} type={"text"} value={user.email} onChange={e => setUser({ ...user, email: e.target.value })}/>
+                <input name={"email"} type={"text"} value={user.email} onChange={e => setUser({ ...user, email: e.target.value })}/>
                 <label htmlFor={"password"}>Password: </label>
-                <input name={"user[password]"} type={"password"} value={user.password} onChange={e => setUser({ ...user, password: e.target.value })}/>
+                <input name={"password"} type={"password"} value={user.password} onChange={e => setUser({ ...user, password: e.target.value })}/>
                 <label htmlFor={"repeat-password"}>Repeat Password: </label>
-                <input name={"user[repeated_password]"} type={"password"} value={user.repeated_password} onChange={e => setUser({ ...user, repeated_password: e.target.value })}/>
+                <input name={"repeated_password"} type={"password"} value={user.repeated_password} onChange={e => setUser({ ...user, repeated_password: e.target.value })}/>
 
                 <input type={"submit"} value={"Save"} name={"Save"} />
                 <label htmlFor={"back"} className={"back"}> Back </label>

@@ -8,26 +8,26 @@ const path = "/auth"
 
 router.get(`${path}/login`, (req, res) => {
     let loginData = {
-        email: req.body.email,
-        password: req.body.password
+        email: req.query.email,
+        password: req.query.password,
     }
 
     AuthService.AuthLogin(loginData).then((data) => {
         if (Object.hasOwn(data, "email")) {
-            //console.log(loginData)
-            //console.log(Object.hasOwn(data, "email"))
             res.status(404)
-            res.json({msg: "User not founded"})
+            res.json({msg: "User not found"})
         } else {
-            res.json(data)
             res.status(200)
-            res.json({msg: "User founded successfully"})
+            res.json(data)
+            //res.json({'session_id' : data._id})
         }
     }).catch(() => {
         res.status(500);
         res.json({msg: "Call the cops"})
     });
 });
+
+
 
 router.post(`${path}/signup`, (req, res) => {
     let errors = []
@@ -72,14 +72,9 @@ router.put(`${path}/edit`, (req, res) => {
 
 
     if (errors.length == 0) {
-        AuthService.AuthUpdate(newUser).then((data) => {
-            if (data === null || !Object.hasOwn(data, 'email')) {
-                res.status(404)
-                res.json({msg: "User not found"})
-            } else {
+        AuthService.AuthUpdate(newUser).then(() => {
                 res.status(202)
                 res.json({msg: "Updated the user successfully :)"})
-            }
         }).catch(() => {
             res.status(500);
             res.json({msg: "Call the cops"})
@@ -88,6 +83,10 @@ router.put(`${path}/edit`, (req, res) => {
         res.status(400)
         res.json(errors)
     }
+});
+
+router.get(`${path}/waitingroom`, (req, res) => {
+
 });
 
 module.exports = router;
