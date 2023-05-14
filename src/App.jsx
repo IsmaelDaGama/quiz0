@@ -6,6 +6,7 @@ import { CookiesProvider } from "react-cookie";
 import io from "socket.io-client";
 const socket = io.connect("http://localhost:8081");
 
+
 import QuizPage from './pages/QuizPage'
 import Home from './pages/Home'
 import Layout from './pages/Layout'

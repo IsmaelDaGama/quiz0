@@ -18,6 +18,26 @@ router.get(`${path}/login`, (req, res) => {
             res.json({msg: "User not found"})
         } else {
             res.status(200)
+            res.json({'_id' : data.id})
+            //res.json({'session_id' : data._id})
+        }
+    }).catch(() => {
+        res.status(500);
+        res.json({msg: "Call the cops"})
+    });
+});
+
+router.get(`${path}/home`, (req, res) => {
+    let idData = {
+        _id: req.query._id
+    }
+
+    AuthService.AuthUser(idData).then((data) => {
+        if (Object.hasOwn(data, "_id")) {
+            res.status(404)
+            res.json({msg: "User not found"})
+        } else {
+            res.status(200)
             res.json(data)
             //res.json({'session_id' : data._id})
         }

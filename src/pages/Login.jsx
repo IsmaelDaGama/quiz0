@@ -8,27 +8,28 @@ let Login = () => {
     const [cookies, setCookie] = useCookies(['User']);
 
 
-
+    /*
     const handle = () => {
         setCookie('User', user, { path: '/waitingroom' });
 
-    };
+    };*/
 
     const submit = e => {
         e.preventDefault()
-
         fetch(`http://localhost:8080/auth/login?email=${user.email}&password=${user.password}`, {
             method: 'GET',
-            headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
-        }).then(res => {
-            if(res.status == 200){
-                setCookie('User',res)
+            headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
+        }).then(res => res.json())
+          .then(json => {
+              setCookie('User',json)
+              console.log(cookies);
+              navigate("/home")
+            /*if(res.status == 200){
+                //setCookie('User',res)
+                console.log(res);
                 navigate("/home");
-            }
-            console.log(res.json());
-            console.log('response.status: ', res.status)
-
-
+            }*/
+            //console.log('response.status: ', res.status)
         })
     }
 
@@ -47,7 +48,7 @@ let Login = () => {
                        value={user.password}
                        onChange={e => setUser({...user,password:e.target.value})}/>
 
-                <input type={"submit"} name={"Login"} onClick={handle}/>
+                <input type={"submit"} name={"Login"}/>
                 <a htmlFor={"sign-up"} className={"sign-up"} href={"/signup"}>Sign up</a>
             </form>
         </>

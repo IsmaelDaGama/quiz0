@@ -9,6 +9,11 @@ let AuthLogin = async (login) => {
     return data;
 }
 
+let AuthUser = async (user) => {
+    let data = await AuthRepo.AuthUser(user);
+    return data;
+}
+
 let AuthUpdate = async (user) => {
     let data = await AuthRepo.AuthUpdate(user);
     return data;
@@ -17,5 +22,6 @@ let AuthUpdate = async (user) => {
 module.exports = {
     AuthRegister,
     AuthLogin,
-    AuthUpdate
+    AuthUpdate,
+    AuthUser
 };

@@ -15,6 +15,11 @@ let AuthLogin = async (login) => {
     return data;
 }
 
+let AuthUser = async (user) => {
+    let data = await User.findOne({_id: user._id});
+    return data;
+}
+
 let AuthUpdate = async (user) => {
     let data = await User.updateOne({ email: user.email }, user)
     return data;
@@ -23,5 +28,6 @@ let AuthUpdate = async (user) => {
 module.exports = {
     AuthSignUp,
     AuthLogin,
-    AuthUpdate
+    AuthUpdate,
+    AuthUser
 };
