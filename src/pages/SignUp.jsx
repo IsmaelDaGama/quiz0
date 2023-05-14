@@ -8,17 +8,17 @@ const SignUp = () =>{
     const navigate = useNavigate();
 
 
+    // SIGN UP PLAYER IT´S A HTTP POST REQUEST
     const submit = e => {
         e.preventDefault()
         fetch('http://localhost:8080/auth/signup', {
             method: 'POST',
-            headers: [{'Content-Type': 'application/json'},
-                        {'Access-Control-Allow-Origin': '*'}],
+            headers: {'Content-Type': 'application/json','Access-Control-Allow-Origin': '*'},
             body: JSON.stringify({'username': user.username,'email':user.email,'password':user.password,'repeated_password':user.repeated_password})
         })
             .then(res => res.json())
             .then(json => json)
-            navigate("/home")
+            navigate("/login")
     }
 
     return (
@@ -51,8 +51,9 @@ const SignUp = () =>{
                    onChange={e => setUser({...user,repeated_password:e.target.value})}/>
 
 
-            <input type={"submit"} name="Sign Up"/>
-            <a htmlFor={"back"} className={"back"} href={"/home"}>Back</a>
+            <input type={"submit"} name={"Sign Up"}/>
+            <a onClick={()=>navigate("/login")} htmlFor={""} className={"back"}>Back</a>
+
         </form>
         </>
     )

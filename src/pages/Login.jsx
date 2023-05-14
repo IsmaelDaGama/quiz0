@@ -7,12 +7,9 @@ let Login = () => {
     const navigate = useNavigate();
     const [cookies, setCookie] = useCookies(['User']);
 
+    //LOGIN QUERY
+    //(HTTP GET REQUEST USING SAVING THE DATA IN A COOKIE)
 
-    /*
-    const handle = () => {
-        setCookie('User', user, { path: '/waitingroom' });
-
-    };*/
 
     const submit = e => {
         e.preventDefault()

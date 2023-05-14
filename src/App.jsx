@@ -32,12 +32,12 @@ function App() {
                 <Route path="/" element={<Layout />}>
                     <Route index element={<QuizPage />} />
                     <Route path="login" element={<Login />} />
-                    <Route path="home" element={<Home />} />
+                    <Route path="home" exact element={<Home socket={socket} />} />
                     <Route path="signup" element={<SignUp />} />
                     <Route path="editprofile" element={<EditProfile/>} />
-                    <Route path="waitingroom" exact element={<WaitingRoom socket={socket}/>} />
-                    <Route path="categories" element={<Categories/>} socket={socket}/>
-                    <Route path="questionstemplate" element={<QuestionsTemplate socket={socket}/>} />
+                    <Route path="waitingroom" exact element={<WaitingRoom socket={socket}/>}/>
+                    <Route path="categories" exact element={<Categories socket={socket}/>}/>
+                    <Route path="questionstemplate" exact element={<QuestionsTemplate socket={socket}/>}/>
                     <Route path="*" element={<Error />} />
                 </Route>
             </Routes>

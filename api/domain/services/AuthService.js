@@ -3,6 +3,14 @@ const AuthRepo = require("../repository/Auth")
 let AuthRegister = async (user) => {
     await AuthRepo.AuthRegister(user);
 }
+let AuthRoom = async (room) => {
+    await AuthRepo.AuthRoom(room);
+}
+
+let AuthJoin = async (room) => {
+    let data = await AuthRepo.AuthJoin(room);
+    return data;
+}
 
 let AuthLogin = async (login) => {
     let data = await AuthRepo.AuthLogin(login);
@@ -23,5 +31,7 @@ module.exports = {
     AuthRegister,
     AuthLogin,
     AuthUpdate,
-    AuthUser
+    AuthUser,
+    AuthJoin,
+    AuthRoom
 };

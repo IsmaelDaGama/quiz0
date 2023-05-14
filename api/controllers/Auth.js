@@ -11,7 +11,6 @@ router.get(`${path}/login`, (req, res) => {
         email: req.query.email,
         password: req.query.password,
     }
-
     AuthService.AuthLogin(loginData).then((data) => {
         if (Object.hasOwn(data, "email")) {
             res.status(404)
@@ -47,6 +46,46 @@ router.get(`${path}/home`, (req, res) => {
     });
 });
 
+router.get(`${path}/joinroom`, (req, res) => {
+    let roomData = {
+        code: req.query.code
+    }
+    AuthService.AuthJoin(roomData).then((data) => {
+        if (Object.hasOwn(data, "code")) {
+            res.status(404)
+            res.json({msg: "Code not found"})
+        } else {
+            res.status(200)
+            res.json(data)
+            //res.json({'session_id' : data._id})
+        }
+    }).catch(() => {
+        res.status(500);
+        res.json({msg: "Call the cops"})
+    });
+});
+
+
+
+
+router.post(`${path}/createroom`, (req, res) => {
+
+    let newRoom = {
+        code: req.body.code,
+        players: req.body.players,
+        level: req.body.level,
+    }
+
+        console.log(newRoom);
+        AuthService.AuthRoom(newRoom).then(() => {
+            res.status(201)
+            res.json({msg: "Room registered the user successfully :)"})
+        }).catch(() => {
+            res.status(500);
+            res.json({msg: "Call the cops"})
+        });
+
+});
 
 
 router.post(`${path}/signup`, (req, res) => {

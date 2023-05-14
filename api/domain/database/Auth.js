@@ -1,5 +1,6 @@
 const db = require("./Connection")
 const {User} = require("../entities/Auth");
+const {Rooms} = require("../entities/Auth");
 let AuthSignUp = async (user) => {
     const newUser = new User({
         username: user.username,
@@ -8,6 +9,20 @@ let AuthSignUp = async (user) => {
     });
 
     await newUser.save();
+}
+
+let AuthRoom = async (room) => {
+    const newRoom = new Rooms({
+        code: room.code,
+        players: room.players,
+        level: room.level,
+    });
+
+    await newRoom.save();
+}
+let AuthJoin = async (room) => {
+    let data = await Rooms.findOne({code: room.code});
+    return data;
 }
 
 let AuthLogin = async (login) => {
@@ -29,5 +44,7 @@ module.exports = {
     AuthSignUp,
     AuthLogin,
     AuthUpdate,
-    AuthUser
+    AuthUser,
+    AuthJoin,
+    AuthRoom
 };
