@@ -5,12 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 
 
-let Home = (props) => {
+let Home = () => {
     //Socket.io
-    const { socket } = props;
-    const [room,setRoom]=useState('');
-    const [message,setMessage]=useState('');
-    const [messageReceived,setMessageReceived]=useState('');
+    const [roomCookie, setRoomCookie] = useCookies(['Room']);
     //API
     const [user,setUser]= useState('');
     const [joinCode,setJoinCode]= useState('');
@@ -23,7 +20,6 @@ let Home = (props) => {
 
     // CREATE ROOM IT´S A HTTP POST REQUEST "SINGING UP" A ROOM
     const submit = () => {
-        setRoom(availableRooms);
         fetch('http://localhost:8080/auth/createroom', {
             method: 'POST',
             headers: {'Content-Type': 'application/json','Access-Control-Allow-Origin': '*'},
@@ -31,34 +27,21 @@ let Home = (props) => {
         })
             .then(res => res.json())
             .then(json => json)
-        joinRoom();
         navigate("/waitingroom");
     }
 
-    //SOCKET.IO
-    const joinRoom =() => {
-        if(room!==""){
-            socket.emit("join_room",room);
-
-        }
-    };
-
-    const sendMessage=()=>{
-        socket.emit("send_message",{message,room});
-    };
-
-    useEffect(()=>{
-        socket.on("receive_message",(data)=>{
-            setMessageReceived(data.message)
-        });
-    },[socket]);
-
-
-    useEffect(()=>{
-        socket.on("receive_message",(data)=>{
-            setMessageReceived(data.message)
-        });
-    },[socket]);
+    //JOIN ROOM (GET QUERY REQUEST)
+    const sendJoincode = a =>{
+        setRoomCookie('Room',joinCode.code)
+        console.log(joinCode)
+        a.preventDefault()
+        fetch(`http://localhost:8080/auth/joinroom?code=${joinCode.code}`,{
+            method: 'GET',
+            headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}})
+            .then(res => res.json())
+            .then(json => console.log(json))    // Status condition & navigate
+        navigate("/waitingroom?="+joinCode.code);
+    }
 
 
     //HOME QUERY => JUST TO DISPLAY NAME OF THE
@@ -75,16 +58,7 @@ let Home = (props) => {
             })
     },[])
 
-    //JOIN ROOM (GET QUERY REQUEST)
-    const sendJoincode = a =>{
-        console.log(joinCode)
-        a.preventDefault()
-        fetch(`http://localhost:8080/auth/joinroom?code=${joinCode.code}`,{
-            method: 'GET',
-            headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}})
-            .then(res => res.json())
-            .then(json => console.log(json))    // Status condition & navigate
-    }
+
 
     return (
         <>

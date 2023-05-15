@@ -1,14 +1,44 @@
 import React, {useEffect, useState} from "react";
 import { io } from "socket.io-client";
 import signUp from "./SignUp.jsx";
+import {useCookies} from "react-cookie";
 
 
 let WaitingRoom = (props) => {
-
+    //Socket.io
     const { socket } = props;
     const [room,setRoom]=useState('');
     const [message,setMessage]=useState('');
     const [messageReceived,setMessageReceived]=useState('');
+    const [roomCookie] = useCookies(['Room']);
+
+
+    const joinRoom =() => {
+        let room = "test";
+        if(room!==""){
+            socket.emit("join_room",room);
+
+        }
+    };
+
+    joinRoom();
+
+    const sendMessage=()=>{
+        socket.emit("send_message",{message,room});
+    };
+
+    useEffect(()=>{
+        socket.on("receive_message",(data)=>{
+            setMessageReceived(data.message)
+        });
+    },[socket]);
+
+
+    useEffect(()=>{
+        console.log(messageReceived)
+    },[messageReceived]);
+
+
 
     return (
         <>
@@ -37,6 +67,11 @@ let WaitingRoom = (props) => {
                     <button className={"signup"} >Play</button>
                     <p></p>
                     <a className={"leaveroom"} onClick={()=>navigate("/login")}>Leave Room</a>
+
+
+
+
+                <p>{messageReceived}</p>
             </div>
 
 
