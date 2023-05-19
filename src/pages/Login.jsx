@@ -3,14 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 let Login = () => {
-    const [user,setUser]= useState('');
+
     const navigate = useNavigate();
-    const [cookies, setCookie] = useCookies(['User']);
+    const [userCookie, setUserCookie] = useCookies(['User']);
+    const [user,setUser]= useState('');
 
     //LOGIN QUERY
     //(HTTP GET REQUEST USING SAVING THE DATA IN A COOKIE)
-
-
     const submit = e => {
         e.preventDefault()
         fetch(`http://localhost:8080/auth/login?email=${user.email}&password=${user.password}`, {
@@ -18,8 +17,8 @@ let Login = () => {
             headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
         }).then(res => res.json())
           .then(json => {
-              setCookie('User',json)
-              console.log(cookies);
+              setUserCookie('User',json)
+              console.log(userCookie);
               navigate("/home")
             /*if(res.status == 200){
                 //setCookie('User',res)

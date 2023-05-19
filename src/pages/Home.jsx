@@ -7,33 +7,56 @@ import { useCookies } from 'react-cookie';
 
 let Home = () => {
     //Socket.io
-    const [roomCookie, setRoomCookie] = useCookies(['Room']);
+    const [joinCookie, setJoinCookie] = useCookies(['JoinRoom']);
+    const [createCookie, setCreateCookie] = useCookies(['CreateRoom']);
+
     //API
     const [user,setUser]= useState('');
     const [joinCode,setJoinCode]= useState('');
     const navigate = useNavigate();
-    const [cookies] = useCookies(['User']);
-    const cookieValue = cookies.User;
-    const availableRooms ="ABC";
+    const [userCookie] = useCookies(['User']);  // CARRY USER ID FROM PREVIOUS PAGE
+    const cookieValue = userCookie.User;                                // DISPLAY USER USERNAME IN THE HOME PAGE
+    const dbRooms =[];
     //console.log(cookieValue._id);
     //console.log(user)
 
+    //FUNCTION THAT RETURNS A VALUE BETWEEN A MAX AND A MIN VALUE
+    function getRndInteger(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+    //GENERATES A RANDOM ROOM NUMBER
+    function createRoom (){
+        let newRoom = getRndInteger(0,20);
+        if(dbRooms.includes(newRoom) == false ){
+            dbRooms.push(newRoom);
+            return newRoom
+        }else{
+         createRoom();
+        }
+    }
+
+
+
+
     // CREATE ROOM IT´S A HTTP POST REQUEST "SINGING UP" A ROOM
     const submit = () => {
+        let newRoom = createRoom();
+        setCreateCookie('CreateRoom',newRoom)
         fetch('http://localhost:8080/auth/createroom', {
             method: 'POST',
             headers: {'Content-Type': 'application/json','Access-Control-Allow-Origin': '*'},
-            body: JSON.stringify({'code': availableRooms,'players':[{"username":user.username}],'level':'1'})
+            body: JSON.stringify({'code': newRoom,'players':[{"username":user.username}],'level':'1'})
         })
             .then(res => res.json())
             .then(json => json)
-        navigate("/waitingroom");
+        navigate("/waitingroom?="+createCookie);
+        //navigate("/waitingroom?="availableRooms);
     }
 
     //JOIN ROOM (GET QUERY REQUEST)
     const sendJoincode = a =>{
-        setRoomCookie('Room',joinCode.code)
-        console.log(joinCode)
+        setJoinCookie('JoinRoom',joinCode.code)
+        console.log(joinCode.code)
         a.preventDefault()
         fetch(`http://localhost:8080/auth/joinroom?code=${joinCode.code}`,{
             method: 'GET',

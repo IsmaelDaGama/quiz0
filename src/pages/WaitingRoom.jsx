@@ -8,22 +8,35 @@ let WaitingRoom = (props) => {
     //Socket.io
     const { socket } = props;
     const [room,setRoom]=useState('');
+
+
     const [message,setMessage]=useState('');
     const [messageReceived,setMessageReceived]=useState('');
-    const [roomCookie] = useCookies(['Room']);
+
+    const [joinCookie] = useCookies(['JoinRoom']);
+    const [createCookie] = useCookies(['CreateRoom']);
 
 
     const joinRoom =() => {
-        let room = "test";
-        if(room!==""){
+        let room = createCookie;
+        if(room!== null){
             socket.emit("join_room",room);
 
         }
     };
 
-    joinRoom();
+    useEffect(()=>{
+        joinRoom();
+        sendMessage();
+        }
 
-    const sendMessage=()=>{
+    )
+
+
+
+    const sendMessage =()=>{
+        setMessage("o que é isto?");
+        let room = createCookie;
         socket.emit("send_message",{message,room});
     };
 
@@ -64,13 +77,12 @@ let WaitingRoom = (props) => {
                     <div className="col"><img src={"rap.png"}/><p>RAP</p></div>
 
                 </div>
-                    <button className={"signup"} >Play</button>
-                    <p></p>
-                    <a className={"leaveroom"} onClick={()=>navigate("/login")}>Leave Room</a>
+                <button className={"signup"} >Play</button>
+                <p></p>
+                <a className={"leaveroom"} onClick={()=>navigate("/login")}>Leave Room</a>
 
-
-
-
+                <p>Create Cookie: {createCookie.CreateRoom}</p>
+                <p>Join Cookie: {joinCookie.JoinRoom}</p>
                 <p>{messageReceived}</p>
             </div>
 
