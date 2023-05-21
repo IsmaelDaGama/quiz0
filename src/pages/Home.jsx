@@ -29,8 +29,8 @@ let Home = (props) => {
 
 
     const joinRoom = (room) => {
-        const userid = user._id;
-        console.log(user._id);
+        const userid = user.username
+        console.log(user.username);
         if(room!== null){
             socket.emit("join_room", {room,userid});
         }
@@ -68,7 +68,7 @@ let Home = (props) => {
         })
             .then(res => res.json())
             .then(json => json)
-        navigate(`/waitingroom?=${createCookie}`);
+        navigate(`/waitingroom?=${newRoom}`);
         //navigate("/waitingroom?="availableRooms);
     }
 
@@ -84,7 +84,7 @@ let Home = (props) => {
             headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}})
             .then(res => res.json())
             .then(json => console.log(json))    // Status condition & navigate
-        navigate("/waitingroom?="+joinCode.code);
+        navigate(`/waitingroom?=${joinCode.code}`);
     }
 
 

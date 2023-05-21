@@ -101,7 +101,7 @@ let WaitingRoom = (props) => {
                 <p></p>
                 <a className={"leaveroom"} onClick={leaveRoom} >Leave Room</a>
 
-                <h3>Room Cookie: {roomCookie.Room}</h3>
+
                 <p></p>
                 <h2>🔥:User connected {joinMessage}</h2>
 

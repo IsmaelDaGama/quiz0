@@ -32,7 +32,7 @@ io.on("connection", (socket) => {
 
 
     socket.on ("send_message",(data)=>{
-        socket.to(data.room).emit("receive_message", data.joinMessage + "Is ready");
+        socket.to(data.room).emit("receive_message", data.joinMessage + " Is ready");
     });
 /*
     socket.on('disconnect', (room) => {
