@@ -5,20 +5,37 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 
 
-let Home = () => {
+let Home = (props) => {
     //Socket.io
+    const { socket } = props;
+    const navigate = useNavigate();
+
     const [joinCookie, setJoinCookie] = useCookies(['JoinRoom']);
     const [createCookie, setCreateCookie] = useCookies(['CreateRoom']);
+    const [roomCookie, setRoomCookie] = useCookies(['Room']);
 
     //API
     const [user,setUser]= useState('');
     const [joinCode,setJoinCode]= useState('');
-    const navigate = useNavigate();
+
+
     const [userCookie] = useCookies(['User']);  // CARRY USER ID FROM PREVIOUS PAGE
     const cookieValue = userCookie.User;                                // DISPLAY USER USERNAME IN THE HOME PAGE
     const dbRooms =[];
     //console.log(cookieValue._id);
     //console.log(user)
+
+
+
+
+    const joinRoom = (room) => {
+        const userid = user._id;
+        console.log(user._id);
+        if(room!== null){
+            socket.emit("join_room", {room,userid});
+        }
+    };
+
 
     //FUNCTION THAT RETURNS A VALUE BETWEEN A MAX AND A MIN VALUE
     function getRndInteger(min, max) {
@@ -39,9 +56,11 @@ let Home = () => {
 
 
     // CREATE ROOM IT´S A HTTP POST REQUEST "SINGING UP" A ROOM
-    const submit = () => {
+    const sendCreateroom = () => {
         let newRoom = createRoom();
         setCreateCookie('CreateRoom',newRoom)
+        setRoomCookie('Room',newRoom)
+        joinRoom(newRoom);
         fetch('http://localhost:8080/auth/createroom', {
             method: 'POST',
             headers: {'Content-Type': 'application/json','Access-Control-Allow-Origin': '*'},
@@ -49,13 +68,15 @@ let Home = () => {
         })
             .then(res => res.json())
             .then(json => json)
-        navigate("/waitingroom?="+createCookie);
+        navigate(`/waitingroom?=${createCookie}`);
         //navigate("/waitingroom?="availableRooms);
     }
 
     //JOIN ROOM (GET QUERY REQUEST)
     const sendJoincode = a =>{
         setJoinCookie('JoinRoom',joinCode.code)
+        setRoomCookie('Room',joinCode.code)
+        joinRoom(joinCode.code);
         console.log(joinCode.code)
         a.preventDefault()
         fetch(`http://localhost:8080/auth/joinroom?code=${joinCode.code}`,{
@@ -91,6 +112,7 @@ let Home = () => {
                         <h1>Welcome</h1>
                         <h2>@{user.username}</h2>
 
+
                     </div>
                     <div className="col">
                         <img src={"rap.png"}/>
@@ -99,7 +121,7 @@ let Home = () => {
             </div>
 
             <br></br>
-            <button onClick={submit} htmlFor={"create-room"} className={"home"}  >Create Room</button>
+            <button onClick={sendCreateroom} htmlFor={"create-room"} className={"home"}  >Create Room</button>
             <button onClick={()=>navigate("/editprofile")} htmlFor={"edit-profile"} className={"home"}>Edit Profile</button>
             <button htmlFor={"stats"} className={"home"}>Stats</button>
             <input name={"join-room"} type="text" className={"home"} placeholder={" Room Code => #123"}

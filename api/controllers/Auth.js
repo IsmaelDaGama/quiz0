@@ -76,7 +76,7 @@ router.post(`${path}/createroom`, (req, res) => {
         level: req.body.level,
     }
 
-        console.log(newRoom);
+        //console.log(newRoom);
         AuthService.AuthRoom(newRoom).then(() => {
             res.status(201)
             res.json({msg: "Room registered the user successfully :)"})

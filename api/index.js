@@ -19,16 +19,29 @@ const io = new Server(httpServer, {
 });
 
 io.on("connection", (socket) => {
-    console.log(`User Connected: ${socket.id}`)
+    //console.log(`User Connected: ${socket.id}`)
+
     socket.on ("join_room",(data)=>{
-        socket.join(data);
-        //console.log(socket.rooms);
+        socket.join(data.room)
+        io.to(data.room).emit("joined_message",data.userid);
+        //io.to(room).emit("Ready to play");
+
+        console.log(socket.rooms);
 
     });
+
 
     socket.on ("send_message",(data)=>{
-        socket.to(data.room).emit("receive_message",data);
+        socket.to(data.room).emit("receive_message", data.joinMessage + "Is ready");
     });
+/*
+    socket.on('disconnect', (room) => {
+        //socket.disconnect()
+        socket.disconnect()
+        io.to(room).emit("disconnect_message",room);
+    });*/
+
+
 });
 
 

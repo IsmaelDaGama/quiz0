@@ -2,54 +2,74 @@ import React, {useEffect, useState} from "react";
 import { io } from "socket.io-client";
 import signUp from "./SignUp.jsx";
 import {useCookies} from "react-cookie";
-
+import { useNavigate } from "react-router-dom";
 
 let WaitingRoom = (props) => {
     //Socket.io
     const { socket } = props;
+
     const [room,setRoom]=useState('');
+    const [id,setId]=useState('');
 
 
-    const [message,setMessage]=useState('');
+    const [joinMessage,setJoinMessage]=useState(''); // user_id
+    const [readyMessage,setReadyMessage]=useState('');
     const [messageReceived,setMessageReceived]=useState('');
 
+    //SOCKET.IO WITH MONGODB IMPLEMENTAION
     const [joinCookie] = useCookies(['JoinRoom']);
     const [createCookie] = useCookies(['CreateRoom']);
+    const [roomCookie] = useCookies(['Room']);
 
-
+    /*
     const joinRoom =() => {
-        let room = createCookie;
+        let room = roomCookie.Room;
         if(room!== null){
             socket.emit("join_room",room);
 
         }
-    };
-
+    };*/
     useEffect(()=>{
-        joinRoom();
-        sendMessage();
-        }
+        socket.on("joined_message",(data)=>{
+            setJoinMessage(data);
+            console.log('🔥: User is connected '+ data);
+        });
+    },[socket]);
 
-    )
 
-
-
-    const sendMessage =()=>{
-        setMessage("o que é isto?");
-        let room = createCookie;
-        socket.emit("send_message",{message,room});
+    const sendMessage = ()=>{
+        //setMessage("Ready");
+        let room = roomCookie.Room;
+        socket.emit("send_message",{room,joinMessage});
     };
 
     useEffect(()=>{
         socket.on("receive_message",(data)=>{
-            setMessageReceived(data.message)
+            console.log(data)
+            setReadyMessage(data);
         });
     },[socket]);
 
 
     useEffect(()=>{
-        console.log(messageReceived)
-    },[messageReceived]);
+        console.log(readyMessage)
+    },[readyMessage]);
+
+
+
+
+
+    const leaveRoom = ()=>{
+        socket.leave("leave",room);
+    };
+
+    useEffect(()=>{
+        socket.on("disconnect_message",(data)=>{
+
+            console.log('🔥: A user disconnected'+data);
+        });
+    },[socket]);
+
 
 
 
@@ -60,7 +80,7 @@ let WaitingRoom = (props) => {
                     <div className="col">
                         <h1>Private Room</h1>
 
-                        #code
+                        #code => {roomCookie.Room}
                     </div>
                     <div className="col">
 
@@ -77,13 +97,16 @@ let WaitingRoom = (props) => {
                     <div className="col"><img src={"rap.png"}/><p>RAP</p></div>
 
                 </div>
-                <button className={"signup"} >Play</button>
+                <button onClick={sendMessage} className={"signup"} >Play</button>
                 <p></p>
-                <a className={"leaveroom"} onClick={()=>navigate("/login")}>Leave Room</a>
+                <a className={"leaveroom"} onClick={leaveRoom} >Leave Room</a>
 
-                <p>Create Cookie: {createCookie.CreateRoom}</p>
-                <p>Join Cookie: {joinCookie.JoinRoom}</p>
-                <p>{messageReceived}</p>
+                <h3>Room Cookie: {roomCookie.Room}</h3>
+                <p></p>
+                <h2>🔥:User connected {joinMessage}</h2>
+
+                <h2>RM: {readyMessage}</h2>
+
             </div>
 
 
@@ -91,5 +114,18 @@ let WaitingRoom = (props) => {
         </>
     )
 }
+
+
+/* LOGS COOKIES IMPLEMENTATION SOCKET.IO WITH MONGO
+
+                <p>Create Cookie: {createCookie.CreateRoom}</p>
+                <p>Join Cookie: {joinCookie.JoinRoom}</p>
+
+
+                <p>Room Cookie: {roomCookie.Room}</p>
+                <p> Show Message:</p>
+                <p>{messageReceived}</p>
+
+ */
 
 export default WaitingRoom;
