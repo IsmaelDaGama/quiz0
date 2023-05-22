@@ -89,26 +89,29 @@ let WaitingRoom = (props) => {
             </div>
 
             <br></br>
+
             <div className="container text-center">
                 <div className="row row-cols-2">
-                    <div className="col"><img src={"rap.png"}/><p>RAP</p></div>
-                    <div className="col"><img src={"rap.png"}/><p>RAP</p></div>
-                    <div className="col"><img src={"rap.png"}/><p>RAP</p></div>
-                    <div className="col"><img src={"rap.png"}/><p>RAP</p></div>
-
+                    <div className="col"><img src={"rap.png"}/><p>🔥User: {joinMessage}</p><p>Is Ready: {readyMessage}</p></div>
+                    <div className="col"><img src={"rap.png"}/><p>🔥User: {joinMessage}</p><p>Is Ready: {readyMessage}</p></div>
                 </div>
                 <button onClick={sendMessage} className={"signup"} >Play</button>
                 <p></p>
                 <a className={"leaveroom"} onClick={leaveRoom} >Leave Room</a>
 
 
-                <p></p>
-                <h2>🔥:User connected {joinMessage}</h2>
-
-                <h2>RM: {readyMessage}</h2>
 
             </div>
+            <p></p>
+            <h2>Aprovação do Projeto? </h2>
+            <p></p>
+            <div className="container text-center">
+                <form>
+                    <button htmlFor={"create-room"} className={"home"}>Sim</button>
+                    <button htmlFor={"join-room"} className={"home"}>Talvez</button>
+                </form>
 
+            </div>
 
 
         </>
